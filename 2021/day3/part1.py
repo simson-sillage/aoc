@@ -12,13 +12,13 @@ for i in range(0, length, 1):
     zeroes = 0
     ones = 0
     for num in binary_numbers:
-        match num[i]:
-            case '0':
-                zeroes += 1
-            case '1':
-                ones += 1
-            case _:
-                raise ValueError
+        bit = num[i]
+        if bit == '0':
+            zeroes += 1
+        elif bit == '1':
+            ones += 1
+        else:
+            raise ValueError
 
     if zeroes > ones:
         gamma += '0'

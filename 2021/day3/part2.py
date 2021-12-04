@@ -45,29 +45,27 @@ def most_common_bit_per_row(binary_numbers, row):
     zeroes = 0
     ones = 0
     for num in binary_numbers:
-        match num[row]:
-            case '0':
-                zeroes += 1
-            case '1': ones += 1
-            case _:
-                raise ValueError
+        bit = num[row]
+        if bit == '0':
+            zeroes += 1
+        elif bit == '1':
+            ones += 1
+        else:
+            raise ValueError
 
     if zeroes > ones:
         return '0'
-    elif ones > zeroes:
-        return '1'
     else:
         return '1'
 
 
 def invert(bit):
-    match bit:
-        case '0':
-            return '1'
-        case '1':
-            return '0'
-        case _:
-            raise ValueError
+    if bit == '0':
+        return '1'
+    elif bit == '1':
+        return '0'
+    else:
+        raise ValueError
 
 
 main()
