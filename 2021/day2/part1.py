@@ -1,37 +1,30 @@
-def main():
-    with open("input.txt") as file:
-        input = file.read().strip()
-
-    commands = input.split('\n')
-
-    # starting positions:
-    x = 0
-    y = 0
-
-    for command in commands:
-        x, y = updatePosition(x, y, *parseCommand(command))
-
-    print(f"x: {x}")
-    print(f"y: {y}")
-    print(f"product: {x*y}")
+import sys
 
 
-def parseCommand(command):
+if len(sys.argv) != 2:
+    sys.exit("error: provide filename of input as argument")
+
+with open(sys.argv[1], 'r') as file:
+    input = file.read().strip()
+
+commands = input.split('\n')
+
+horizontal = 0
+depth = 0
+
+for command in commands:
     direction, magnitude = command.split()
     magnitude = int(magnitude)
     match direction:
         case "forward":
-            return magnitude, 0
+            horizontal += magnitude
         case "down":
-            return 0, -magnitude
+            depth += magnitude
         case "up":
-            return 0, +magnitude
+            depth -= magnitude
         case _:
             raise ValueError
 
-
-def updatePosition(x0, y0, delta_x, delta_y):
-    return x0 + delta_x, y0 + delta_y
-
-
-main()
+print(f"x: {horizontal}")
+print(f"y: {depth}")
+print(f"product: {horizontal*depth}")
