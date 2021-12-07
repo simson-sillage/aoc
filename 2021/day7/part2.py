@@ -11,7 +11,7 @@ positions = input.split(',')
 positions = list(map(int, positions))
 
 fuel_costs = {}
-for candidate in range(min(positions), max(positions), 1):
+for candidate in range(min(positions), max(positions) + 1, 1):
     fuel_cost = 0
 
     for pos in positions:
