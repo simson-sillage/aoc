@@ -16,7 +16,7 @@ for candidate in range(min(positions), max(positions) + 1, 1):
 
     for pos in positions:
         diff = abs(candidate-pos)
-        fuel_cost += 0.5 * diff * (diff + 1)
+        fuel_cost += diff * (diff + 1) // 2
 
     fuel_costs[candidate] = fuel_cost
 
@@ -24,4 +24,4 @@ target = min(fuel_costs, key=fuel_costs.get)
 required_fuel = fuel_costs[target]
 
 print(f"cheapest position: {target}")
-print(f"required fuel: {int(required_fuel)}")
+print(f"required fuel: {required_fuel}")
