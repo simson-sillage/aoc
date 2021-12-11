@@ -1,5 +1,4 @@
 import sys
-from collections import defaultdict
 
 
 def main():
@@ -17,7 +16,7 @@ def main():
 
     step = 0
     while True:
-        flashed = defaultdict(lambda: False)
+        flashed = {}
 
         for y, row in enumerate(octopi):
             for x, _ in enumerate(row):
@@ -25,13 +24,16 @@ def main():
 
         step += 1
 
-        if sum(flashed for flashed in flashed.values()) == octopi_count:
+        if len(flashed) == octopi_count:
             print(f"Simultaneous flash occured at step: {step}")
             break
 
 
 def update(octopi, y, x, flashed):
-    if flashed[(y, x)]:
+    # out of bounds
+    if x < 0 or y < 0 or y >= len(octopi) or x >= len(octopi[y]):
+        return 0
+    if flashed.get((y, x), False):
         return 0
     if octopi[y][x] == 9:
         octopi[y][x] = 0
@@ -45,53 +47,14 @@ def update(octopi, y, x, flashed):
 def update_flash(octopi, y, x, flashed):
     count = 0
 
-    # check left
-    yi = y
-    xi = x - 1
-    if xi >= 0:
-        count += update(octopi, yi, xi, flashed)
-
-    # check left-up
-    yi = y - 1
-    xi = x - 1
-    if xi >= 0 and yi >= 0:
-        count += update(octopi, yi, xi, flashed)
-
-    # check up
-    yi = y - 1
-    xi = x
-    if yi >= 0:
-        count += update(octopi, yi, xi, flashed)
-
-    # check up-right
-    yi = y - 1
-    xi = x + 1
-    if yi >= 0 and xi < len(octopi[y]):
-        count += update(octopi, yi, xi, flashed)
-
-    # check right
-    yi = y
-    xi = x + 1
-    if xi < len(octopi[y]):
-        count += update(octopi, yi, xi, flashed)
-
-    # check right-down
-    yi = y + 1
-    xi = x + 1
-    if xi < len(octopi[y]) and yi < len(octopi):
-        count += update(octopi, yi, xi, flashed)
-
-    # check down
-    yi = y + 1
-    xi = x
-    if yi < len(octopi):
-        count += update(octopi, yi, xi, flashed)
-
-    # check down-left
-    yi = y + 1
-    xi = x - 1
-    if xi >= 0 and yi < len(octopi):
-        count += update(octopi, yi, xi, flashed)
+    count += update(octopi, y, x - 1, flashed)  # left
+    count += update(octopi, y - 1, x - 1, flashed)  # left-up
+    count += update(octopi, y - 1, x, flashed)  # up
+    count += update(octopi, y - 1, x + 1, flashed)  # up-right
+    count += update(octopi, y, x + 1, flashed)  # right
+    count += update(octopi, y + 1, x + 1, flashed)  # right-down
+    count += update(octopi, y + 1, x, flashed)  # down
+    count += update(octopi, y + 1, x - 1, flashed)  # down-left
 
     return count
 
